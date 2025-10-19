@@ -3,13 +3,14 @@
 namespace Dashed\DashedEcommerceWebwinkelkeur\Filament\Pages\Settings;
 
 use Filament\Pages\Page;
-use Filament\Forms\Components\Tabs;
+use Filament\Schemas\Schema;
 use Dashed\DashedCore\Classes\Sites;
-use Filament\Forms\Components\Tabs\Tab;
+use Filament\Schemas\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Forms\Components\Placeholder;
+use Filament\Schemas\Components\Tabs\Tab;
 use Dashed\DashedCore\Models\Customsetting;
+use Filament\Infolists\Components\TextEntry;
 use Dashed\DashedEcommerceWebwinkelkeur\Classes\Webwinkelkeur;
 
 class WebwinkelkeurSettingsPage extends Page
@@ -17,7 +18,7 @@ class WebwinkelkeurSettingsPage extends Page
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Webwinkelkeur';
 
-    protected static string $view = 'dashed-core::settings.pages.default-settings';
+    protected string $view = 'dashed-core::settings.pages.default-settings';
     public array $data = [];
 
     public function mount(): void
@@ -34,24 +35,22 @@ class WebwinkelkeurSettingsPage extends Page
         $this->form->fill($formData);
     }
 
-    protected function getFormSchema(): array
+    public function form(Schema $schema): Schema
     {
         $sites = Sites::getSites();
         $tabGroups = [];
 
         $tabs = [];
         foreach ($sites as $site) {
-            $schema = [
-                Placeholder::make('label')
-                    ->label("Webwinkelkeur voor {$site['name']}")
-                    ->content('Activeer webwinkelkeur zodat de klanten automatisch een mail krijgen om een review achter te laten.')
+            $newSchema = [
+                TextEntry::make("Webwinkelkeur voor {$site['name']}")
+                    ->state('Activeer webwinkelkeur zodat de klanten automatisch een mail krijgen om een review achter te laten.')
                     ->columnSpan([
                         'default' => 1,
                         'lg' => 2,
                     ]),
-                Placeholder::make('label')
-                    ->label("Webwinkelkeur is " . (! Customsetting::get('webwinkelkeur_connected', $site['id'], 0) ? 'niet' : '') . ' geconnect')
-                    ->content(Customsetting::get('webwinkelkeur_connection_error', $site['id'], ''))
+                TextEntry::make("Webwinkelkeur is " . (! Customsetting::get('webwinkelkeur_connected', $site['id'], 0) ? 'niet' : '') . ' geconnect')
+                    ->state(Customsetting::get('webwinkelkeur_connection_error', $site['id'], ''))
                     ->columnSpan([
                         'default' => 1,
                         'lg' => 2,
@@ -66,7 +65,7 @@ class WebwinkelkeurSettingsPage extends Page
 
             $tabs[] = Tab::make($site['id'])
                 ->label(ucfirst($site['name']))
-                ->schema($schema)
+                ->schema($newSchema)
                 ->columns([
                     'default' => 1,
                     'lg' => 2,
@@ -75,12 +74,8 @@ class WebwinkelkeurSettingsPage extends Page
         $tabGroups[] = Tabs::make('Sites')
             ->tabs($tabs);
 
-        return $tabGroups;
-    }
-
-    public function getFormStatePath(): ?string
-    {
-        return 'data';
+        return $schema->schema($tabGroups)
+            ->statePath('data');
     }
 
     public function submit()
