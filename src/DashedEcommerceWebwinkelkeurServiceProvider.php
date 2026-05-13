@@ -14,15 +14,17 @@ class DashedEcommerceWebwinkelkeurServiceProvider extends PackageServiceProvider
     {
         cms()->registerSettingsPage(WebwinkelkeurSettingsPage::class, 'Webwinkelkeur', 'chat-bubble-left-ellipsis', 'Koppel Webwinkelkeur');
 
-        cms()->registerIntegration([
-            'slug' => 'webwinkelkeur',
-            'label' => 'Webwinkelkeur',
-            'icon' => 'heroicon-o-star',
-            'category' => 'reviews',
-            'settings_page' => WebwinkelkeurSettingsPage::class,
-            'health_check' => fn (?string $siteId = null) => \Dashed\DashedCore\Integrations\IntegrationHealth::fromSettings(['webwinkelkeur_client_id', 'webwinkelkeur_auth_token'], $siteId, 'Client ID of auth-token ontbreekt'),
-            'package' => 'dashed-ecommerce-webwinkelkeur',
-        ]);
+        if (method_exists(cms(), 'registerIntegration')) {
+            cms()->registerIntegration([
+                'slug' => 'webwinkelkeur',
+                'label' => 'Webwinkelkeur',
+                'icon' => 'heroicon-o-star',
+                'category' => 'reviews',
+                'settings_page' => WebwinkelkeurSettingsPage::class,
+                'health_check' => fn (?string $siteId = null) => \Dashed\DashedCore\Integrations\IntegrationHealth::fromSettings(['webwinkelkeur_client_id', 'webwinkelkeur_auth_token'], $siteId, 'Client ID of auth-token ontbreekt'),
+                'package' => 'dashed-ecommerce-webwinkelkeur',
+            ]);
+        }
 
         cms()->registerSettingsDocs(
             page: \Dashed\DashedEcommerceWebwinkelkeur\Filament\Pages\Settings\WebwinkelkeurSettingsPage::class,
