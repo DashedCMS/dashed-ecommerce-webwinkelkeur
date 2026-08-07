@@ -59,10 +59,10 @@ class WebwinkelkeurSettingsPage extends Page
                         'lg' => 2,
                     ]),
                 TextInput::make("webwinkelkeur_client_id_{$site['id']}")
-                    ->label('Webwinkelkeur Client ID')
+                    ->label(__('Webwinkelkeur Client ID'))
                     ->maxLength(255),
                 TextInput::make("webwinkelkeur_auth_token_{$site['id']}")
-                    ->label('Webwinkelkeur Auth Token')
+                    ->label(__('Webwinkelkeur Auth Token'))
                     ->maxLength(255),
             ];
 
@@ -92,7 +92,7 @@ class WebwinkelkeurSettingsPage extends Page
         }
 
         Notification::make()
-            ->title('De Webwinkelkeur instellingen zijn opgeslagen')
+            ->title(__('De Webwinkelkeur instellingen zijn opgeslagen'))
             ->success()
             ->send();
 
