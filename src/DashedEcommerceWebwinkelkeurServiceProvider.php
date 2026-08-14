@@ -62,10 +62,24 @@ MARKDOWN,
         );
 
         $package
+            ->hasViews()
             ->name('dashed-ecommerce-webwinkelkeur');
 
         cms()->builder('plugins', [
             new DashedEcommerceWebwinkelkeurPlugin(),
         ]);
+    }
+
+    public function bootingPackage()
+    {
+        // Twee guards: dashed-core kan ouder zijn en emailBlock nog niet
+        // kennen, en een site zonder nieuwsbriefmodule heeft dit blok
+        // nergens voor nodig. In bootingPackage() en niet in
+        // configurePackage(): die laatste draait in de register-fase, en
+        // dashed-ecommerce-webwinkelkeur komt daarin vóór dashed-newsletter,
+        // dus de binding bestaat op dat moment nog niet.
+        if (method_exists(cms(), 'emailBlock') && app()->bound('newsletter')) {
+            cms()->emailBlock('webwinkelkeur-score', \Dashed\DashedEcommerceWebwinkelkeur\Mail\EmailBlocks\ReviewScoreBlock::class);
+        }
     }
 }
