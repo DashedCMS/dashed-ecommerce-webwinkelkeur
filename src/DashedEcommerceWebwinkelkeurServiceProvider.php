@@ -63,7 +63,8 @@ MARKDOWN,
 
         $package
             ->hasViews()
-            ->name('dashed-ecommerce-webwinkelkeur');
+            ->name('dashed-ecommerce-webwinkelkeur')
+            ->hasTranslations();
 
         cms()->builder('plugins', [
             new DashedEcommerceWebwinkelkeurPlugin(),
