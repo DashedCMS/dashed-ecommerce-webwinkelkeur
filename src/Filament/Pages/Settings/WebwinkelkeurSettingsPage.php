@@ -16,6 +16,7 @@ use Dashed\DashedEcommerceWebwinkelkeur\Classes\Webwinkelkeur;
 
 class WebwinkelkeurSettingsPage extends Page
 {
+    use \Dashed\DashedCore\Filament\Concerns\TranslatesPageLabels;
     use HasSettingsPermission;
 
     protected static bool $shouldRegisterNavigation = false;
