@@ -1,1 +1,11 @@
-{}
+{
+    "Aantal beoordelingen": "Number of ratings",
+    "Cijfer": "Digit",
+    "De Webwinkelkeur instellingen zijn opgeslagen": "The Webwinkelkeur settings have been saved",
+    "Introductietekst": "Introduction text",
+    "Koppel Webwinkelkeur": "Connect Webwinkelkeur",
+    "Webwinkelkeur": "Webwinkelkeur",
+    "Webwinkelkeur Auth Token": "Webwinkelkeur Auth Token",
+    "WebwinkelKeur beoordelingscijfer": "WebwinkelKeur rating",
+    "Webwinkelkeur Client ID": "Webwinkelkeur Client ID"
+}
